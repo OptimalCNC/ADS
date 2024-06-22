@@ -44,6 +44,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+cmake-build-*/
 
 # Visual Studo 2015 cache/options directory
 .vs/
@@ -135,6 +136,9 @@ AutoTest.Net/
 
 # Installshield output folder
 [Ee]xpress/
+
+# JetBrains Idea project files
+.idea/
 
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/

@@ -79,3 +79,11 @@ ninja -C example/build
 ```
 ---
 ADS/AMS Specification: https://infosys.beckhoff.com/content/1033/tc3_ads_intro/index.html
+
+
+Use the Library with TwinCAT Router
+===================================
+To compile the library with TwinCAT Router, please set:
+- option `USE_TwinCAT_ROUTER`: "-DUSE_TwinCAT_ROUTER=ON"
+- provide the installation location of TwinCAT by setting variable `TwinCAT_ROOT`; e.g. "-DTwinCAT_ROOT=C:\Program Files (x86)\Beckhoff\TwinCAT"
+ 
