@@ -12,7 +12,7 @@
 
 set(TwinCAT_FOUND FALSE)
 
-
+set(TwinCAT_API_ROOT "${TwinCAT_ROOT}/AdsApi/TcAdsDll")
 find_path(TwinCAT_INCLUDE_DIR
         NAMES "TcAdsAPI.h"
         HINTS ${TwinCAT_API_ROOT}/Include
