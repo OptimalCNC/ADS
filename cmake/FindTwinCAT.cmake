@@ -1,4 +1,3 @@
-
 # FindTwinCAT.cmake
 # Attempt to find TwinCAT
 #
@@ -9,39 +8,36 @@
 #   TwinCAT::TwinCAT - The imported target for TwinCAT
 
 # You can provide a hint by setting TwinCAT_ROOT
+set(TwinCAT_API_ROOT "${TwinCAT_ROOT}/AdsApi/TcAdsDll" CACHE PATH "Path to TwinCAT API root directory")
 
-set(TwinCAT_FOUND FALSE)
+function(find_TwinCAT_path)
+  find_path(TwinCAT_INCLUDE_DIR
+    NAMES "TcAdsAPI.h" "TcAdsDef.h"
+    HINTS ${TwinCAT_API_ROOT}/Include
+    NO_DEFAULT_PATH
+  )
+  if (CMAKE_SIZEOF_VOID_P GREATER 4)
+    set(ARCH "x64")
+  endif ()
+  find_library(TwinCAT_LIBRARY
+    NAMES "TcAdsDll.lib"
+    HINTS "${TwinCAT_API_ROOT}/Lib/${ARCH}"  "${TwinCAT_API_ROOT}/${ARCH}/lib"
+    NO_DEFAULT_PATH
+  )
+  mark_as_advanced(TwinCAT_INCLUDE_DIR TwinCAT_LIBRARY)
+endfunction()
 
-set(TwinCAT_API_ROOT "${TwinCAT_ROOT}/AdsApi/TcAdsDll")
-find_path(TwinCAT_INCLUDE_DIR
-        NAMES "TcAdsAPI.h"
-        HINTS ${TwinCAT_API_ROOT}/Include
-)
-
-find_path(TwinCAT_INCLUDE_DIR_DEF
-        NAMES "TcAdsDef.h"
-        HINTS ${TwinCAT_API_ROOT}/Include
-)
-
-if (CMAKE_SIZEOF_VOID_P GREATER 4)
-  set(ARCH "x64")
-endif ()
-
-find_library(TwinCAT_LIBRARY
-        NAMES "TcAdsDll.lib"
-        HINTS "${TwinCAT_API_ROOT}/Lib/${ARCH}" "${TwinCAT_API_ROOT}/${ARCH}/lib"
-)
-
+find_TwinCAT_path()
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(TwinCAT
-        DEFAULT_MSG
-        TwinCAT_INCLUDE_DIR
-        TwinCAT_LIBRARY
+  DEFAULT_MSG
+  TwinCAT_INCLUDE_DIR
+  TwinCAT_LIBRARY
 )
 
 if(TwinCAT_FOUND)
-  set(TwinCAT_INCLUDE_DIRS ${TwinCAT_INCLUDE_DIR})
-  set(TwinCAT_LIBRARIES ${TwinCAT_LIBRARY})
+  set(TwinCAT_INCLUDE_DIRS ${TwinCAT_INCLUDE_DIR} CACHE)
+  set(TwinCAT_LIBRARIES ${TwinCAT_LIBRARY} CACHE)
   if(NOT TARGET TwinCAT::TwinCAT)
     add_library(TwinCAT::TwinCAT SHARED IMPORTED)
     set_target_properties(
@@ -52,6 +48,3 @@ if(TwinCAT_FOUND)
     )
   endif()
 endif()
-
-mark_as_advanced(TwinCAT_INCLUDE_DIR TwinCAT_LIBRARY)
-
