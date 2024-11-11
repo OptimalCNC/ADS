@@ -19,6 +19,9 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # Compiler flags and definitions for Visual Studio come here
   add_compile_definitions(NOMINMAX)
+  if (BUILD_SHARED_LIBS)
+    message(FATAL_ERROR "Building shared library is not supported for MSVC")
+  endif ()
 endif()
 
 add_definitions(-DCONFIG_DEFAULT_LOGLEVEL=1)
