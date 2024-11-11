@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(COMPILE_OPTIONS
@@ -20,9 +19,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # Compiler flags and definitions for Visual Studio come here
   add_compile_definitions(NOMINMAX)
-  if (BUILD_SHARED_LIBS)
-     message(FATAL_ERROR "Building shared library is not supported for MSVC")
-  endif ()
 endif()
 
 add_definitions(-DCONFIG_DEFAULT_LOGLEVEL=1)

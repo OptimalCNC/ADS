@@ -36,6 +36,7 @@ $<INSTALL_INTERFACE:include/ads>)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_link_libraries(ads PUBLIC wsock32)
+  set(BUILD_SHARED_LIBS OFF)
 endif()
 
 
