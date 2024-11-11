@@ -28,7 +28,11 @@ list(
     standalone/AmsRouter.cpp
     standalone/NotificationDispatcher.cpp
 )
-add_library(ads ${SOURCES})
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_library(ads STATIC ${SOURCES})
+else()
+    add_library(ads ${SOURCES})
+endif()
 add_library(ads::ads ALIAS ads)
 
 target_include_directories(ads PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -36,7 +40,7 @@ $<INSTALL_INTERFACE:include/ads>)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_link_libraries(ads PUBLIC wsock32)
-  set(BUILD_SHARED_LIBS OFF)
+
 endif()
 
 
