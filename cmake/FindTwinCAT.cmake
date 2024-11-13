@@ -36,8 +36,8 @@ find_package_handle_standard_args(TwinCAT
 )
 
 if(TwinCAT_FOUND)
-  set(TwinCAT_INCLUDE_DIRS ${TwinCAT_INCLUDE_DIR} CACHE)
-  set(TwinCAT_LIBRARIES ${TwinCAT_LIBRARY} CACHE)
+  set(TwinCAT_INCLUDE_DIRS ${TwinCAT_INCLUDE_DIR} CACHE PATH "TwinCAT include directories")
+  set(TwinCAT_LIBRARIES ${TwinCAT_LIBRARY} CACHE FILEPATH "TwinCAT library")
   if(NOT TARGET TwinCAT::TwinCAT)
     add_library(TwinCAT::TwinCAT SHARED IMPORTED)
     set_target_properties(
