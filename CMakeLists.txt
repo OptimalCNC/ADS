@@ -8,20 +8,15 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set(COMPILE_OPTIONS
-    -pedantic
-    -Wall
-    -Wextra
-  )
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(COMPILE_OPTIONS -pedantic -Wall -Wextra)
   add_definitions(-D_GNU_SOURCE)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # Compiler flags and definitions for Visual Studio come here
   add_compile_definitions(NOMINMAX)
-  if (BUILD_SHARED_LIBS)
-     message(FATAL_ERROR "Building shared library is not supported for MSVC")
-  endif ()
+  if(BUILD_SHARED_LIBS)
+    message(FATAL_ERROR "Building shared library is not supported for MSVC")
+  endif()
 endif()
 
 add_definitions(-DCONFIG_DEFAULT_LOGLEVEL=1)
@@ -31,7 +26,6 @@ add_subdirectory(AdsTool)
 add_subdirectory(AdsLibTest)
 add_subdirectory(example)
 
-
 # Install library
 include(GenerateExportHeader)
 set(ADSLIB_VERSION 0.0.20)
@@ -39,19 +33,22 @@ set(ADSLIB_VERSION 0.0.20)
 set_property(TARGET ads PROPERTY VERSION ${ADSLIB_VERSION})
 set_property(TARGET ads PROPERTY SOVERSION 3)
 
-
 # export library (either static or shared depending on BUILD_SHARED_LIBS)
-install(TARGETS ads AdsTool
+install(
+  TARGETS ads AdsTool
   EXPORT adsTargets
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
-  INCLUDES DESTINATION include
-  )
+  INCLUDES
+  DESTINATION include)
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
-  FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
-
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/
+  DESTINATION include/ads/
+  FILES_MATCHING
+  PATTERN "*.hpp"
+  PATTERN "*.h")
 
 set(cmake_configfile_install lib/cmake/ads)
 set(target_install_dest_name "${cmake_configfile_install}/adsTargets.cmake")
@@ -60,21 +57,33 @@ include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/adsConfigVersion.cmake"
   VERSION ${ADSLIB_VERSION}
-  COMPATIBILITY AnyNewerVersion
-)
+  COMPATIBILITY AnyNewerVersion)
 
-configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
-                "${CMAKE_CURRENT_BINARY_DIR}/cmake/adsConfig.cmake"
-                INSTALL_DESTINATION "${cmake_configfile_install}"
-                PATH_VARS target_install_dest_name)
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake/adsConfig.cmake"
+  INSTALL_DESTINATION "${cmake_configfile_install}"
+  PATH_VARS target_install_dest_name)
 
-install(EXPORT adsTargets
-    FILE adsTargets.cmake
-    NAMESPACE ads::
-    DESTINATION "${cmake_configfile_install}"
-    EXPORT_LINK_INTERFACE_LIBRARIES)
+install(
+  EXPORT adsTargets
+  FILE adsTargets.cmake
+  NAMESPACE ads::
+  DESTINATION "${cmake_configfile_install}"
+  EXPORT_LINK_INTERFACE_LIBRARIES)
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/adsConfig.cmake"
-      "${CMAKE_CURRENT_BINARY_DIR}/adsConfigVersion.cmake"
-    DESTINATION "${cmake_configfile_install}")
+              "${CMAKE_CURRENT_BINARY_DIR}/adsConfigVersion.cmake"
+        DESTINATION "${cmake_configfile_install}")
 
+include(cmake/Package.cmake)
+# Configure Debian package if on Linux, you need to install dpkg-dev to build
+# the package.
+if(UNIX)
+  configure_debian_package()
+endif()
+# Configure Windows package if on Windows, you need to install nsis to build the
+# package.
+if(WIN32)
+  configure_windows_package()
+endif()
