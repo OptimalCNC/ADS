@@ -50,6 +50,9 @@ endif()
 target_link_libraries(ads PUBLIC Threads::Threads)
 option(USE_TWINCAT_ROUTER "If ON, will also build a library `ads_twincat` using TwinCAT router." OFF)
 if (USE_TWINCAT_ROUTER)
+    if (NOT WIN32)
+        message(FATAL_ERROR "TWINCAT_ROUTER can only be used in Windows")
+    endif ()
     list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
     find_package(TwinCAT REQUIRED)
     list(
@@ -58,6 +61,7 @@ if (USE_TWINCAT_ROUTER)
         TwinCAT/AdsLib.cpp
     )
     add_library(ads_twincat ${SOURCES_TWINCAT})
+    add_library(ads::ads_twincat ALIAS ads_twincat)
     target_compile_definitions(ads_twincat PUBLIC USE_TWINCAT_ROUTER)
     target_include_directories(ads_twincat PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include/ads>)
