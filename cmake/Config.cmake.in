@@ -1,3 +1,6 @@
 @PACKAGE_INIT@
 
+include(CMakeFindDependencyMacro)
+find_dependency(Threads REQUIRED)
+
 include ("@PACKAGE_target_install_dest_name@")
