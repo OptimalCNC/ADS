@@ -1,14 +1,14 @@
 name: Build and Package ADS on Windows
 
-#on:
-#  push:
-#    paths:
-#      - .github/workflows/build-package-windows.yml
-#  pull_request:
-#    paths:
-#      - .github/workflows/build-package-windows.yml
+on:
+  push:
+    paths:
+      - .github/workflows/build-package-windows.yml
+  pull_request:
+    paths:
+      - .github/workflows/build-package-windows.yml
 
-on: push
+#on: push
 
 permissions:
   contents: write
