@@ -21,8 +21,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Configure and Build ADS
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Package ADS with CPack
+        run: |
+          cd build
+          cpack -G DEB
+
       - name: Extract Version and Set Tag Name
         run: |
+          cd build
           debFile=$(ls ads-*-linux-*.deb | head -n 1)
           if [[ "$debFile" =~ ads-([0-9]+\.[0-9]+\.[0-9]+)-linux(?:-[a-zA-Z]+)?.deb ]]; then
             VERSION=${BASH_REMATCH[1]}
