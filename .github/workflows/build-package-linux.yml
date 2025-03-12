@@ -1,0 +1,55 @@
+name: Build and Package ADS on Linux
+
+#on:
+#  push:
+#    paths:
+#      - .github/workflows/build-package-linux.yml
+#      - deb/**
+#  pull_request:
+#    paths:
+#      - .github/workflows/build-package-linux.yml
+#      - deb/**
+
+jobs:
+  build-package-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential dpkg-dev
+
+      - name: Configure and Build
+        run: |
+          mkdir build && cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Package with CPack
+        run: |
+          cd build
+          cpack -G DEB
+
+      - name: Set Tag Name
+        run: echo "TAG_NAME=ads-release-${{ github.run_number }}" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "${{ env.TAG_NAME }}"
+          name: "ADS Release ${{ github.run_number }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload DEB Package
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "${{ env.TAG_NAME }}"
+          files: build/*.deb
+          allowUpdates: true
