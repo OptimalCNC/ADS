@@ -20,16 +20,17 @@ jobs:
     strategy:
       matrix:
         build_type: [Release, Debug]
-        twincat: [ON, OFF]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure and Build ADS
+      - name: Configure and Build ADS (Both ads::ads and ads::ads_twincat)
         shell: pwsh
         run: |
           mkdir build
           cd build
-          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=${{ matrix.twincat }}
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON
+          cmake --build . --config ${{ matrix.build_type }}
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=OFF
           cmake --build . --config ${{ matrix.build_type }}
 
       - name: Package ADS with CPack
@@ -53,11 +54,7 @@ jobs:
       - name: Set Tag Name
         shell: pwsh
         run: |
-          if ("${{ matrix.twincat }}" -eq "ON") {
-            echo "TAG_NAME=${{ env.VERSION }}-${{ matrix.build_type }}-use-twincat" >> $env:GITHUB_ENV
-          } else {
-            echo "TAG_NAME=${{ env.VERSION }}-${{ matrix.build_type }}-without-twincat" >> $env:GITHUB_ENV
-          }
+          echo "TAG_NAME=${{ env.VERSION }}-${{ matrix.build_type }}" >> $env:GITHUB_ENV
 
       - name: Release the Package
         uses: softprops/action-gh-release@v2
