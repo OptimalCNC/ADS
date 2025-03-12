@@ -50,7 +50,6 @@ jobs:
             exit 1
           }
 
-
       - name: Set Tag Name
         shell: pwsh
         run: |
@@ -64,7 +63,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/ads-*-${{ matrix.build_type }}.exe
-          tag: "${{ env.TAG_NAME }}_Windows"
+          tag: "windows_${{ env.TAG_NAME }}"
           allowUpdates: true
           removeArtifacts: true
           replacesArtifacts: true

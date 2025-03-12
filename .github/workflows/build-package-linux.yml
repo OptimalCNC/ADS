@@ -21,20 +21,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Configure and Build ADS
-        run: |
-          mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
-          cmake --build . --config Release
-
-      - name: Package ADS with CPack
+      - name: Extract Version and Set Tag Name
         run: |
           cd build
-          cpack -G DEB
+          debFile=$(ls ads-*-linux-*.deb | head -n 1)
+          if [[ "$debFile" =~ ads(?:-[a-zA-Z]+)?-([0-9]+\.[0-9]+\.[0-9]+)-linux(?:-[a-zA-Z]+)?.deb ]]; then
+            VERSION=${BASH_REMATCH[1]}
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "TAG_NAME=linux_$VERSION" >> $GITHUB_ENV
+          else
+            echo "Failed to extract version"
+            exit 1
+          fi
 
-      - name:  Release the Package
+      - name: Release the Package
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "ads-release-on_linux"
+          tag_name: "${{ env.TAG_NAME }}"
           name: "ADS Release on Linux"
           files: build/*.deb
