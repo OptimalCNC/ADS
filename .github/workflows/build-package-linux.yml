@@ -49,5 +49,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "${{ env.TAG_NAME }}"
-          name: "ADS Release on Linux"
+          name: "${{ env.TAG_NAME }}"
           files: build/*.deb

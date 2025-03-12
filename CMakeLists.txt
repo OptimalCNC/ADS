@@ -48,17 +48,28 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
-#if (MSVC)
-#  if (TARGET ads)
-#    install(FILES $<TARGET_PDB_FILE:ads> DESTINATION "${CMAKE_INSTALL_BINDIR}"
-#            CONFIGURATIONS Debug OPTIONAL)
-#  endif()
-#
-#  if (TARGET AdsTool)
-#    install(FILES $<TARGET_PDB_FILE:AdsTool> DESTINATION "${CMAKE_INSTALL_BINDIR}"
-#            CONFIGURATIONS Debug OPTIONAL)
-#  endif()
-#endif()
+if (MSVC)
+  if (TARGET ads)
+    get_target_property(ADS_PDB_FILE ads PDB_NAME)
+    if (ADS_PDB_FILE)
+      install(FILES "${ADS_PDB_FILE}"
+              DESTINATION "${CMAKE_INSTALL_BINDIR}"
+              CONFIGURATIONS Debug
+              OPTIONAL)
+    endif()
+  endif()
+
+  if (TARGET AdsTool)
+    get_target_property(ADSTOOL_PDB_FILE AdsTool PDB_NAME)
+    if (ADSTOOL_PDB_FILE)
+      install(FILES "${ADSTOOL_PDB_FILE}"
+              DESTINATION "${CMAKE_INSTALL_BINDIR}"
+              CONFIGURATIONS Debug
+              OPTIONAL)
+    endif()
+  endif()
+endif()
+
 
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
