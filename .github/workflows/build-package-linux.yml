@@ -34,14 +34,11 @@ jobs:
           cd build
           cpack -G DEB
 
-      - name: Set Tag Name
-        run: echo "TAG_NAME=ads-release-${{ github.run_number }}" >> $GITHUB_ENV
-
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "${{ env.TAG_NAME }}"
+          tag_name: "ads-release-on_linux"
           name: "ADS Release on Linux"
           draft: false
           prerelease: false
@@ -50,6 +47,6 @@ jobs:
       - name: Upload DEB Package
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "${{ env.TAG_NAME }}"
+          tag_name: "ads-release-on_linux"
           files: build/*.deb
           allowUpdates: true
