@@ -1,13 +1,13 @@
 name: Build and Package ADS on Windows
 
-#on:
-#  push:
-#    paths:
-#      - .github/workflows/build-package-windows.yml
-#  pull_request:
-#    paths:
-#      - .github/workflows/build-package-windows.yml
-on: push
+on:
+  push:
+    paths:
+      - .github/workflows/build-package-windows.yml
+  pull_request:
+    paths:
+      - .github/workflows/build-package-windows.yml
+
 
 jobs:
   build-package-windows:
@@ -51,5 +51,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/ads*-${{ matrix.build_type }}.exe
-          tag: "${{ env.TAG_NAME }}"
+          tag: "${{ env.TAG_NAME }} on Windows"
           allowUpdates: true
