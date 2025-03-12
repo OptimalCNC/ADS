@@ -48,6 +48,16 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
+if (MSVC)
+  install(FILES
+          $<TARGET_PDB_FILE:ads>
+          $<TARGET_PDB_FILE:AdsTool>
+          DESTINATION "${CMAKE_INSTALL_BINDIR}"
+          CONFIGURATIONS Debug
+          OPTIONAL
+  )
+endif()
+
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
 
