@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14.0)
+cmake_minimum_required(VERSION 3.13.0)
 
 project(ads)
 
@@ -48,12 +48,16 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
+# 用3.14的cmake 和 TARGET_PDB_FILE 也会报错，所以写成手动拼路径
 if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   foreach(target ads AdsTool)
     if (TARGET ${target})
-      install(FILES $<TARGET_PDB_FILE:${target}>
-              DESTINATION "${CMAKE_INSTALL_BINDIR}"
-              OPTIONAL)
+      get_target_property(PDB_FILE ${target} COMPILE_PDB_NAME)
+      if (PDB_FILE)
+        install(FILES "${CMAKE_BINARY_DIR}/pdb/${PDB_FILE}.pdb"
+                DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                OPTIONAL)
+      endif()
     endif()
   endforeach()
 endif()
