@@ -57,7 +57,11 @@ if (MSVC)
                 DESTINATION "${CMAKE_INSTALL_BINDIR}"
                 CONFIGURATIONS Debug
                 OPTIONAL)
+      else()
+        message(FATAL_ERROR "Error: Target '${target}' does not have a valid PDB_NAME property set.")
       endif()
+    else()
+      message(FATAL_ERROR "Error: Target '${target}' does not exist.")
     endif()
   endforeach()
 endif()
