@@ -46,7 +46,6 @@ if(WIN32 EQUAL 1)
     target_link_libraries(ads PUBLIC ws2_32)
 endif()
 
-
 if(!WIN32)
     find_package(Threads REQUIRED)
     target_link_libraries(ads PUBLIC Threads::Threads)

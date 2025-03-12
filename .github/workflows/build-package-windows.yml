@@ -1,14 +1,13 @@
 name: Build and Package ADS on Windows
 
-#on:
-#  push:
-#    paths:
-#      - .github/workflows/build-package-windows.yml
-#  pull_request:
-#    paths:
-#      - .github/workflows/build-package-windows.yml
+on:
+  push:
+    paths:
+      - .github/workflows/build-package-windows.yml
+  pull_request:
+    paths:
+      - .github/workflows/build-package-windows.yml
 
-on: push
 permissions:
   contents: write
   pull-requests: write
@@ -19,18 +18,17 @@ jobs:
     strategy:
       matrix:
         build_type: [Release, Debug]
-        twincat: [ON,OFF]
+        twincat: [ON, OFF]
     steps:
       - uses: actions/checkout@v4
 
       - name: Configure and Build ADS
         shell: pwsh
         run: |
-          mkdir build 
+          mkdir build
           cd build
           cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=${{ matrix.twincat }}
           cmake --build . --config ${{ matrix.build_type }}
-    
 
       - name: Package ADS with CPack
         shell: pwsh
@@ -38,21 +36,32 @@ jobs:
           cd build
           cpack -G NSIS64 -C ${{ matrix.build_type }}
 
+      - name: Extract Version from Release
+        shell: pwsh
+        run: |
+          cd build
+          $exeFile = Get-ChildItem -Filter "ads-*-win64.exe" | Select-Object -First 1
+          if ($exeFile -match "ads-(\d+\.\d+\.\d+)-win64.exe") {
+            echo "VERSION=$($matches[1])" >> $env:GITHUB_ENV
+          } else {
+            echo "Failed to extract version" 
+            exit 1
+          }
+
       - name: Set Tag Name
         shell: pwsh
         run: |
           if ("${{ matrix.twincat }}" -eq "ON") {
-            echo "TAG_NAME=${{ matrix.build_type }}-use-twincat" >> $env:GITHUB_ENV
+            echo "TAG_NAME=${{ env.VERSION }}-${{ matrix.build_type }}-use-twincat" >> $env:GITHUB_ENV
           } else {
-            echo "TAG_NAME=${{ matrix.build_type }}-without-twincat" >> $env:GITHUB_ENV
+            echo "TAG_NAME=${{ env.VERSION }}-${{ matrix.build_type }}-without-twincat" >> $env:GITHUB_ENV
           }
 
       - name: Release the Package
         uses: ncipollo/release-action@v1
         with:
-          artifacts: build/ads*-${{ matrix.build_type }}.exe
+          artifacts: build/ads-*-${{ matrix.build_type }}.exe
           tag: "${{ env.TAG_NAME }}_Windows"
           allowUpdates: true
           removeArtifacts: true
           replacesArtifacts: true
-
