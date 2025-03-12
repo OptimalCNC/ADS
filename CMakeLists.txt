@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13.0)
+cmake_minimum_required(VERSION 3.14.0)
 
 project(ads)
 
@@ -51,21 +51,12 @@ install(TARGETS ads AdsTool
 if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   foreach(target ads AdsTool)
     if (TARGET ${target})
-      get_target_property(PDB_FILE ${target} COMPILE_PDB_NAME)
-      if (PDB_FILE)
-        install(FILES "${CMAKE_BINARY_DIR}/pdb/${PDB_FILE}.pdb"
-                DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                OPTIONAL)
-      else()
-        message(WARNING "Warning: Target '${target}' does not have a valid PDB_NAME property set. Skipping PDB installation.")
-      endif()
-    else()
-      message(FATAL_ERROR "Error: Target '${target}' does not exist.")
+      install(FILES $<TARGET_PDB_FILE:${target}>
+              DESTINATION "${CMAKE_INSTALL_BINDIR}"
+              OPTIONAL)
     endif()
   endforeach()
 endif()
-
-
 
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
