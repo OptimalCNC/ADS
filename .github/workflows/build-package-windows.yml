@@ -43,7 +43,7 @@ jobs:
         run: |
           cd build
           $exeFile = Get-ChildItem -Filter "ads-*-win64-*.exe" | Select-Object -First 1
-          if ($exeFile -match "ads(?:-[a-zA-Z]+)?-(\d+\.\d+\.\d+)-win64(?:-[a-zA-Z]+)?.exe") {
+          if ($exeFile -match "ads-(\d+\.\d+\.\d+)-win64(?:-[a-zA-Z]+)?.exe") {
             echo "VERSION=$($matches[1])" >> $env:GITHUB_ENV
           } else {
             echo "Failed to extract version" 
