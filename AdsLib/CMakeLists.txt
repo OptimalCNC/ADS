@@ -42,15 +42,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_link_libraries(ads PUBLIC wsock32)
 endif()
 
-
 if(WIN32 EQUAL 1)
     target_link_libraries(ads PUBLIC ws2_32)
 endif()
-
-if(MSVC)
-    target_link_libraries(ads PUBLIC wsock32)
-endif()
-
 
 target_link_libraries(ads PUBLIC Threads::Threads)
 option(USE_TWINCAT_ROUTER "If ON, will also build a library `ads_twincat` using TwinCAT router." OFF)
