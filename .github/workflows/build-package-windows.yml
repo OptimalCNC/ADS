@@ -38,9 +38,18 @@ jobs:
           cd build
           cpack -G NSIS64 -C ${{ matrix.build_type }}
 
+      - name: Set Tag Name
+        shell: pwsh
+        run: |
+          if ("${{ matrix.twincat }}" -eq "ON") {
+            echo "TAG_NAME=${{ matrix.build_type }}-use-twincat" >> $env:GITHUB_ENV
+          } else {
+            echo "TAG_NAME=${{ matrix.build_type }}-without-twincat" >> $env:GITHUB_ENV
+          }
+
       - name: Upload NSIS Package
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/ads*-${{ matrix.build_type }}.exe
-          tag: "${{matrix.build_type }}+${{matrix.twincat}}"
+          tag: "${{ env.TAG_NAME }}"
           allowUpdates: true
