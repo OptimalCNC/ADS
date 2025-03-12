@@ -18,35 +18,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake build-essential dpkg-dev
-
-      - name: Configure and Build
+      - name: Configure and Build ADS
         run: |
           mkdir build && cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
 
-      - name: Package with CPack
+      - name: Package ADS with CPack
         run: |
           cd build
           cpack -G DEB
 
-      - name: Create GitHub Release
-        id: create_release
+      - name:  Release the Package
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "ads-release-on_linux"
           name: "ADS Release on Linux"
-          draft: false
-          prerelease: false
-
-
-      - name: Upload DEB Package
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: "ads-release-on_linux"
           files: build/*.deb
           allowUpdates: true

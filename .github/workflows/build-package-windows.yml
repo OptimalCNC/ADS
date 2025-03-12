@@ -19,20 +19,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure Build
+      - name: Configure and Build ADS
         shell: pwsh
         run: |
-          mkdir build
+          mkdir build 
           cd build
           cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=${{ matrix.twincat }}
-
-      - name: Build
-        shell: pwsh
-        run: |
-          cd build
           cmake --build . --config ${{ matrix.build_type }}
+    
 
-      - name: Package with CPack
+      - name: Package ADS with CPack
         shell: pwsh
         run: |
           cd build
@@ -47,7 +43,7 @@ jobs:
             echo "TAG_NAME=${{ matrix.build_type }}-without-twincat" >> $env:GITHUB_ENV
           }
 
-      - name: Upload NSIS Package
+      - name: Release the Package
         uses: ncipollo/release-action@v1
         with:
           artifacts: build/ads*-${{ matrix.build_type }}.exe
