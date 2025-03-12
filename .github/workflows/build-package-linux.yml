@@ -36,3 +36,5 @@ jobs:
           name: "ADS Release on Linux"
           files: build/*.deb
           allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true

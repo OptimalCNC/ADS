@@ -49,3 +49,6 @@ jobs:
           artifacts: build/ads*-${{ matrix.build_type }}.exe
           tag: "${{ env.TAG_NAME }} on Windows"
           allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true
+
