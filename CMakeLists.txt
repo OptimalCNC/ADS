@@ -25,11 +25,6 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 add_definitions(-DCONFIG_DEFAULT_LOGLEVEL=1)
-
-#if(WIN32)
-#  target_link_libraries(ads PRIVATE ws2_32)
-#endif()
-
 add_subdirectory(AdsLib)
 add_subdirectory(AdsTool)
 add_subdirectory(AdsLibTest)
