@@ -48,23 +48,23 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
-if (MSVC)
+if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   foreach(target ads AdsTool)
     if (TARGET ${target})
-      get_target_property(PDB_FILE ${target} PDB_NAME)
+      get_target_property(PDB_FILE ${target} COMPILE_PDB_NAME)
       if (PDB_FILE)
-        install(FILES "${PDB_FILE}"
+        install(FILES "${CMAKE_BINARY_DIR}/pdb/${PDB_FILE}.pdb"
                 DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                CONFIGURATIONS Debug
                 OPTIONAL)
       else()
-        message(FATAL_ERROR "Error: Target '${target}' does not have a valid PDB_NAME property set.")
+        message(WARNING "Warning: Target '${target}' does not have a valid PDB_NAME property set. Skipping PDB installation.")
       endif()
     else()
       message(FATAL_ERROR "Error: Target '${target}' does not exist.")
     endif()
   endforeach()
 endif()
+
 
 
 
