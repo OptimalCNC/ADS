@@ -60,10 +60,8 @@ jobs:
           }
 
       - name: Release the Package
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v2
         with:
-          artifacts: build/ads-*-${{ matrix.build_type }}.exe
-          tag: "windows_${{ env.TAG_NAME }}"
-          allowUpdates: true
-          removeArtifacts: true
-          replacesArtifacts: true
+          tag_name: "windows_${{ env.TAG_NAME }}"
+          name: "windows_${{ env.TAG_NAME }}"
+          files: build/ads-*-${{ matrix.build_type }}.exe
