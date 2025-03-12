@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.13.0)
 
 project(ads)
 
@@ -48,17 +48,17 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
-if (MSVC)
-  if (TARGET ads)
-    install(FILES $<TARGET_PDB_FILE:ads> DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            CONFIGURATIONS Debug OPTIONAL)
-  endif()
-
-  if (TARGET AdsTool)
-    install(FILES $<TARGET_PDB_FILE:AdsTool> DESTINATION "${CMAKE_INSTALL_BINDIR}"
-            CONFIGURATIONS Debug OPTIONAL)
-  endif()
-endif()
+#if (MSVC)
+#  if (TARGET ads)
+#    install(FILES $<TARGET_PDB_FILE:ads> DESTINATION "${CMAKE_INSTALL_BINDIR}"
+#            CONFIGURATIONS Debug OPTIONAL)
+#  endif()
+#
+#  if (TARGET AdsTool)
+#    install(FILES $<TARGET_PDB_FILE:AdsTool> DESTINATION "${CMAKE_INSTALL_BINDIR}"
+#            CONFIGURATIONS Debug OPTIONAL)
+#  endif()
+#endif()
 
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
