@@ -1,0 +1,46 @@
+name: Build and Package ADS on Windows
+
+on:
+  push:
+    paths:
+      - .github/workflows/build-package-windows.yml
+  pull_request:
+    paths:
+      - .github/workflows/build-package-windows.yml
+
+
+jobs:
+  build-package-windows:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        build_type: [Release, Debug]
+        twincat: [ON,OFF]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure Build
+        shell: pwsh
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=${{ matrix.twincat }}
+
+      - name: Build
+        shell: pwsh
+        run: |
+          cd build
+          cmake --build . --config ${{ matrix.build_type }}
+
+      - name: Package with CPack
+        shell: pwsh
+        run: |
+          cd build
+          cpack -G NSIS64 -C ${{ matrix.build_type }}
+
+      - name: Upload NSIS Package
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: build/ads*-${{ matrix.build_type }}.exe
+          tag: "${{matrix.build_type }}+${{matrix.twincat}}"
+          allowUpdates: true
