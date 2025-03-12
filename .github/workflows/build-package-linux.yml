@@ -9,6 +9,7 @@ name: Build and Package ADS on Linux
 #    paths:
 #      - .github/workflows/build-package-linux.yml
 #      - deb/**
+on: push
 
 jobs:
   build-package-linux:
