@@ -23,7 +23,6 @@ jobs:
       - name: Configure and Build ADS
         shell: pwsh
         run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force
           $env:TwinCAT_ROOT="C:\TwinCAT"
           echo "TwinCAT_ROOT is set to $env:TwinCAT_ROOT"
           
@@ -37,7 +36,6 @@ jobs:
       - name: Extract Version from Release
         shell: pwsh
         run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force
           cd build
           $exeFile = Get-ChildItem -Filter "ads-*.exe" | Sort-Object Name -Descending | Select-Object -First 1
           if ($exeFile.Name -match "ads-([\d\.]+)") {
@@ -50,7 +48,6 @@ jobs:
       - name: Rename Executables add build_type
         shell: pwsh
         run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force
           cd build
           $exeFile = Get-ChildItem -Filter "ads-*.exe" | Sort-Object Name -Descending | Select-Object -First 1
           if ($exeFile) {
