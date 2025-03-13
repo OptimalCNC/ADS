@@ -1,15 +1,16 @@
 name: Build and Package ADS on Linux
 
-on:
- push:
-   paths:
-     - .github/workflows/build-package-linux.yml
-     - deb/**
- pull_request:
-   paths:
-     - .github/workflows/build-package-linux.yml
-     - deb/**
+#on:
+# push:
+#   paths:
+#     - .github/workflows/build-package-linux.yml
+#     - deb/**
+# pull_request:
+#   paths:
+#     - .github/workflows/build-package-linux.yml
+#     - deb/**
 
+on: push
 
 jobs:
   build-package-linux:
