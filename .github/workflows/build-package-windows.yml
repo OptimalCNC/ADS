@@ -46,18 +46,37 @@ jobs:
         run: |
           cd build_twincat
           cpack -G NSIS64 -C ${{ matrix.build_type }}
+
+          # 确保 cpack 生成了文件
           $installer = Get-ChildItem -Filter "*.exe" | Select-Object -First 1
+          if ($installer -eq $null) { 
+            echo "Error: No installer found!" 
+            exit 1 
+          }
+
+          # 获取原始名字并添加后缀
+          $originalName = $installer.Name
           $suffix = "${{ matrix.build_type }}".ToLower()
-          $newName = $installer.BaseName + "-" + $suffix + $installer.Extension
+          $newName = "$originalName-$suffix.exe"
           Rename-Item -Path $installer.FullName -NewName $newName
           cd ..
-          
+
           cd build_no_twincat
           cpack -G NSIS64 -C ${{ matrix.build_type }}
+
+          # 确保 cpack 生成了文件
           $installer = Get-ChildItem -Filter "*.exe" | Select-Object -First 1
-          $newName = $installer.BaseName + "-" + $suffix + $installer.Extension
+          if ($installer -eq $null) { 
+            echo "Error: No installer found!" 
+            exit 1 
+          }
+
+          # 获取原始名字并添加后缀
+          $originalName = $installer.Name
+          $newName = "$originalName-$suffix.exe"
           Rename-Item -Path $installer.FullName -NewName $newName
           cd ..
+
 
 
       - name: Extract Version from Release
