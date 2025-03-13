@@ -35,8 +35,8 @@ jobs:
       - name: Extract Version and Set Tag Name
         run: |
           cd build
-          debFile=$(ls ads-*-linux-*.deb | head -n 1)
-          if [[ "$debFile" =~ ads-([0-9]+\.[0-9]+\.[0-9]+)-linux(-[a-zA-Z]+)?.deb ]]; then
+          debFile=$(ls ads_*.deb | head -n 1)
+          if [[ "$debFile" =~ ads_([0-9]+\.[0-9]+\.[0-9]+)_.*.deb ]]; then
             VERSION=${BASH_REMATCH[1]}
             echo "VERSION=$VERSION" >> $GITHUB_ENV
           else
