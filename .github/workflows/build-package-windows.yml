@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure and Build ADS
-        shell: pwsh
+        shell: powershell
         run: |
           $env:TwinCAT_ROOT="C:\TwinCAT"
           echo "TwinCAT_ROOT is set to $env:TwinCAT_ROOT"
@@ -34,7 +34,7 @@ jobs:
           
 
       - name: Extract Version from Release
-        shell: pwsh
+        shell: powershell
         run: |
           cd build
           $exeFile = Get-ChildItem -Filter "ads-*.exe" | Sort-Object Name -Descending | Select-Object -First 1
@@ -46,7 +46,7 @@ jobs:
           }
 
       - name: Rename Executables add build_type
-        shell: pwsh
+        shell: powershell
         run: |
           cd build
           $exeFile = Get-ChildItem -Filter "ads-*.exe" | Sort-Object Name -Descending | Select-Object -First 1
