@@ -31,13 +31,13 @@ jobs:
           
           mkdir build_twincat
           cd build_twincat
-          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           cmake --build . --config ${{ matrix.build_type }}
           cd ..
 
           mkdir build_no_twincat
           cd build_no_twincat
-          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           cmake --build . --config ${{ matrix.build_type }}
 
 
