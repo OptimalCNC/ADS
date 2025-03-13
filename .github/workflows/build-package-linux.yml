@@ -11,6 +11,7 @@ name: Build and Package ADS on Linux
 #     - deb/**
 
 on: push
+
 jobs:
   build-package-linux:
     runs-on: ubuntu-latest
