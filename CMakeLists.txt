@@ -49,6 +49,21 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
+# 用3.13的cmake 和 TARGET_PDB_FILE 好像不兼容，所以用旧方法
+if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+  foreach(target ads AdsTool)
+    if (TARGET ${target})
+      get_target_property(PDB_FILE ${target} COMPILE_PDB_NAME)
+      if (PDB_FILE)
+        install(FILES "${CMAKE_BINARY_DIR}/pdb/${PDB_FILE}.pdb"
+                DESTINATION "${CMAKE_INSTALL_BINDIR}"
+                OPTIONAL)
+      endif()
+    endif()
+  endforeach()
+endif()
+
+
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
 
