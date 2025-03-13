@@ -50,14 +50,9 @@ jobs:
             exit 1
           }
 
-      - name: Set Tag Name
-        shell: pwsh
-        run: |
-          echo "TAG_NAME=${{ env.VERSION }}-${{ matrix.build_type }}" >> $env:GITHUB_ENV
-
       - name: Release the Package
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "windows_${{ env.TAG_NAME }}"
-          name: "windows_${{ env.TAG_NAME }}"
+          tag_name: "V_${{ env.VERSION }}"
+          name: "V_${{ env.VERSION }}"
           files: build/ads-*-${{ matrix.build_type }}.exe

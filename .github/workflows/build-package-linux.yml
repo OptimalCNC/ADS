@@ -39,7 +39,6 @@ jobs:
           if [[ "$debFile" =~ ads-([0-9]+\.[0-9]+\.[0-9]+)-linux(-[a-zA-Z]+)?.deb ]]; then
             VERSION=${BASH_REMATCH[1]}
             echo "VERSION=$VERSION" >> $GITHUB_ENV
-            echo "TAG_NAME=linux_$VERSION" >> $GITHUB_ENV
           else
             echo "Failed to extract version"
             exit 1
@@ -48,6 +47,6 @@ jobs:
       - name: Release the Package
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "${{ env.TAG_NAME }}"
-          name: "${{ env.TAG_NAME }}"
+          tag_name: "V_${{ env.VERSION }}"
+          name: "V_${{ env.VERSION }}"
           files: build/*.deb
