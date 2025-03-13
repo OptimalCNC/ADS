@@ -41,7 +41,6 @@ $<INSTALL_INTERFACE:include/ads>)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   target_link_libraries(ads PUBLIC wsock32)
 endif()
-
 if(WIN32 EQUAL 1)
     target_link_libraries(ads PUBLIC ws2_32)
 endif()

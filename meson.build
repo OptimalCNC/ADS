@@ -4,7 +4,7 @@ project('AdsLib', 'cpp',
     'buildtype=release',
     'warning_level=3',
     'werror=true',
-    'b_pie=true',
+    'b_pie=false',
   ]
 )
 

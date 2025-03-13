@@ -30,7 +30,6 @@ add_subdirectory(AdsTool)
 add_subdirectory(AdsLibTest)
 add_subdirectory(example)
 
-
 # Install library
 include(GenerateExportHeader)
 set(ADSLIB_VERSION 0.0.20)
@@ -48,7 +47,7 @@ install(TARGETS ads AdsTool
   INCLUDES DESTINATION include
   )
 
-# 用3.14的cmake 和 TARGET_PDB_FILE 也会报错，所以写成手动拼路径
+# 用3.13的cmake 和 TARGET_PDB_FILE 好像不兼容，所以用旧方法
 if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   foreach(target ads AdsTool)
     if (TARGET ${target})
