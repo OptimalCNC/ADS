@@ -34,7 +34,7 @@ jobs:
             New-Item -ItemType Directory -Force -Path build
           }
           cd build
-          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           cmake --build . --config ${{ matrix.build_type }}
           cpack -G NSIS64 -C ${{ matrix.build_type }}
           

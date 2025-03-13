@@ -57,22 +57,10 @@ if(POLICY CMP0087)
   cmake_policy(SET CMP0087 NEW)
 endif()
 
-function(SDL_install_pdb TARGET DIRECTORY)
-  get_target_property(type ${TARGET} TYPE)
-  if(type MATCHES "^(SHARED_LIBRARY|EXECUTABLE)$")
-    install(FILES $<TARGET_PDB_FILE:${TARGET}> DESTINATION "${DIRECTORY}" OPTIONAL)
-  elseif(type STREQUAL "STATIC_LIBRARY")
-    if(CMAKE_GENERATOR MATCHES "^Visual Studio.*")
-      install(CODE "file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${DIRECTORY}\" TYPE FILE OPTIONAL FILES \"${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_CONFIG_NAME}/$<TARGET_FILE_BASE_NAME:${TARGET}>.pdb\")")
-    else()
-      install(CODE "file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${DIRECTORY}\" TYPE FILE OPTIONAL FILES \"${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${TARGET}.dir/$<TARGET_FILE_BASE_NAME:${TARGET}>.pdb\")")
-    endif()
-  endif()
-endfunction()
-
-
-if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-  SDL_install_pdb(ads "lib")
+if (win32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+  install(FILES $<TARGET_PDB_FILE: ads>
+          DESTINATION "${CMAKE_INSTALL_BINDIR}"
+          OPTIONAL)
 endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
