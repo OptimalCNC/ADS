@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Configure and Build ADS
-        shell: powershell
+        shell: pwsh
         run: |
           Set-ExecutionPolicy Bypass -Scope Process -Force
           $env:TwinCAT_ROOT="C:\TwinCAT"
@@ -35,7 +35,7 @@ jobs:
           
 
       - name: Extract Version from Release
-        shell: powershell
+        shell: pwsh
         run: |
           Set-ExecutionPolicy Bypass -Scope Process -Force
           cd build
@@ -48,7 +48,7 @@ jobs:
           }
 
       - name: Rename Executables add build_type
-        shell: powershell
+        shell: pwsh
         run: |
           Set-ExecutionPolicy Bypass -Scope Process -Force
           cd build
