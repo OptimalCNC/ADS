@@ -71,9 +71,9 @@ function(SDL_install_pdb TARGET DIRECTORY)
 endfunction()
 
 
-if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-  SDL_install_pdb(ads "lib")
-endif()
+#if (MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+#  SDL_install_pdb(ads "lib")
+#endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
   FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
