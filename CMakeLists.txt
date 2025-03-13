@@ -25,10 +25,12 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 add_definitions(-DCONFIG_DEFAULT_LOGLEVEL=1)
+
 add_subdirectory(AdsLib)
 add_subdirectory(AdsTool)
 add_subdirectory(AdsLibTest)
 add_subdirectory(example)
+
 
 # Install library
 include(GenerateExportHeader)
