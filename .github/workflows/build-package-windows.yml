@@ -1,3 +1,5 @@
+name: Build and Package ADS on Windows
+
 on:
   push:
     paths:
@@ -11,8 +13,7 @@ permissions:
 
 jobs:
   build-package-windows:
-    #    runs-on: [self-hosted, windows, x64, twincat]
-    runs-on: windows-2019
+    runs-on: [self-hosted, windows, x64, twincat]
     strategy:
       matrix:
         build_type: [Release, Debug]
