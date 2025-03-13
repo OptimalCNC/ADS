@@ -35,6 +35,5 @@ function(configure_windows_package)
   endif()
   # CMAKE_BUILD_TYPE 在 workflow中定义
   set(CPACK_PACKAGE_FILE_NAME "ads-${ADSLIB_VERSION}-win64-${CMAKE_BUILD_TYPE}")
-
   include(CPack)
 endfunction()
