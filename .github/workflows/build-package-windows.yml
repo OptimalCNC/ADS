@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build-package-windows:
-    runs-on: windows-2019
+    runs-on: [self-hosted, windows, x64, twincat]
     strategy:
       matrix:
         build_type: [Release, Debug]
@@ -25,6 +25,8 @@ jobs:
       - name: Configure and Build ADS (Both ads::ads and ads::ads_twincat)
         shell: pwsh
         run: |
+          $env:TwinCAT_ROOT="C:\TwinCAT"
+          echo "TwinCAT_ROOT is set to $env:TwinCAT_ROOT"
           mkdir build
           cd build
           cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
