@@ -23,17 +23,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure and Build ADS (Both ads::ads and ads::ads_twincat)
+      - name: Configure and Build ADS
         shell: pwsh
         run: |
           $env:TwinCAT_ROOT="C:\TwinCAT"
           echo "TwinCAT_ROOT is set to $env:TwinCAT_ROOT"
-          mkdir build
-          cd build
+          
+          mkdir build_twincat
+          cd build_twincat
           cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           cmake --build . --config ${{ matrix.build_type }}
+          cd ..
+
+          mkdir build_no_twincat
+          cd build_no_twincat
           cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           cmake --build . --config ${{ matrix.build_type }}
+
 
       - name: Package ADS with CPack
         shell: pwsh
@@ -58,5 +64,7 @@ jobs:
         with:
           tag_name: "${{ env.VERSION }}"
           name: "${{ env.VERSION }}"
-          files: build/*.exe
+          files: |
+            build_twincat/*.exe
+            build_no_twincat/*.exe
 
