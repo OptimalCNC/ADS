@@ -48,13 +48,15 @@ jobs:
           cpack -G NSIS64 -C ${{ matrix.build_type }}
           $installer = Get-ChildItem -Filter "*.exe" | Select-Object -First 1
           $suffix = "${{ matrix.build_type }}".ToLower()
-          Rename-Item $installer.FullName ($installer.BaseName + "-" + $suffix + ".exe")
+          $newName = $installer.BaseName + "-" + $suffix + $installer.Extension
+          Rename-Item -Path $installer.FullName -NewName $newName
           cd ..
           
           cd build_no_twincat
           cpack -G NSIS64 -C ${{ matrix.build_type }}
           $installer = Get-ChildItem -Filter "*.exe" | Select-Object -First 1
-          Rename-Item $installer.FullName ($installer.BaseName + "-" + $suffix + ".exe")
+          $newName = $installer.BaseName + "-" + $suffix + $installer.Extension
+          Rename-Item -Path $installer.FullName -NewName $newName
           cd ..
 
 
