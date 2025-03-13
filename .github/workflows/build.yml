@@ -24,7 +24,7 @@ jobs:
         run: sudo apt update -y && sudo apt install -y ninja-build
       - uses: actions/checkout@v2
       - name: compile library
-        run: cmake -S . -B build && cmake --build build
+        run: cmake -S . -B build -DCMAKE_POSITION_INDEPENDENT_CODE=ON && cmake --build build
       - uses: actions/upload-artifact@v4
         with:
           name: ubuntu-cmake
