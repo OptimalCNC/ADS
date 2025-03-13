@@ -41,11 +41,22 @@ jobs:
           cmake --build . --config ${{ matrix.build_type }}
 
 
-      - name: Package ADS with CPack
+      - name: Package ADS with CPack and Rename Installer
         shell: pwsh
         run: |
-          cd build
+          cd build_twincat
           cpack -G NSIS64 -C ${{ matrix.build_type }}
+          $installer = Get-ChildItem -Filter "*.exe" | Select-Object -First 1
+          $suffix = "${{ matrix.build_type }}".ToLower()
+          Rename-Item $installer.FullName ($installer.BaseName + "-" + $suffix + ".exe")
+          cd ..
+          
+          cd build_no_twincat
+          cpack -G NSIS64 -C ${{ matrix.build_type }}
+          $installer = Get-ChildItem -Filter "*.exe" | Select-Object -First 1
+          Rename-Item $installer.FullName ($installer.BaseName + "-" + $suffix + ".exe")
+          cd ..
+
 
       - name: Extract Version from Release
         shell: pwsh
