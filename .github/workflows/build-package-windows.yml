@@ -63,4 +63,5 @@ jobs:
           name: "${{ env.VERSION }}"
           files: |
             build/*.exe
+            token: ${{ secrets.GH_RELEASE_TOKEN }} 
 
