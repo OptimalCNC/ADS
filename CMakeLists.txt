@@ -53,10 +53,6 @@ install(TARGETS ads AdsTool ${additional_export_targets}
   INCLUDES DESTINATION include
   )
 
-if(POLICY CMP0087)
-  cmake_policy(SET CMP0087 NEW)
-endif()
-
 if (win32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   install(FILES $<TARGET_PDB_FILE: ads>
           DESTINATION "${CMAKE_INSTALL_BINDIR}"
