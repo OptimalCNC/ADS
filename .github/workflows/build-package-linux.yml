@@ -1,15 +1,9 @@
 name: Build and Package ADS on Linux
 
 on:
- push:
-   paths:
-     - .github/workflows/build-package-linux.yml
-     - deb/**
- pull_request:
-   paths:
-     - .github/workflows/build-package-linux.yml
-     - deb/**
-
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build-package-linux:
@@ -24,7 +18,7 @@ jobs:
       - name: Configure and Build ADS
         run: |
           mkdir build && cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake .. -DCMAKE_BUILD_TYPE=Release
           cmake --build . --config Release
 
       - name: Package ADS with CPack
@@ -43,7 +37,6 @@ jobs:
             echo "Failed to extract version"
             exit 1
           fi
-
 
       - name: Release the Package
         uses: softprops/action-gh-release@v2
