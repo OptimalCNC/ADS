@@ -31,8 +31,11 @@ jobs:
           cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           cmake --build . --config ${{ matrix.build_type }}
           cpack -G NSIS64 -C ${{ matrix.build_type }}
-    
-          
+
+      - name: Install CMake via Chocolatey
+        shell: cmd
+        run: |
+          choco install cmake --installargs "ADD_CMAKE_TO_PATH=System" -y     
 
       - name: Extract Version from Release
         shell: cmd
