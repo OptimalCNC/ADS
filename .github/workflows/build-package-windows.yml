@@ -20,11 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install CMake via Chocolatey
-        shell: cmd
-        run: |
-          choco install cmake --installargs "ADD_CMAKE_TO_PATH=System" -y    
-
       - name: Configure and Build ADS
         shell: cmd
         run: |
