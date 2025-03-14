@@ -8,7 +8,7 @@
 #   TwinCAT::TwinCAT - The imported target for TwinCAT
 
 # You can provide a hint by setting TwinCAT_ROOT
-set(TwinCAT_API_ROOT "${TwinCAT_ROOT}/AdsApi/TcAdsDll" CACHE PATH "Path to TwinCAT API root directory")
+set(TwinCAT_API_ROOT "C:/TwinCAT/AdsApi/TcAdsDll" CACHE PATH "Path to TwinCAT API root directory")
 
 function(find_TwinCAT_path)
   find_path(TwinCAT_INCLUDE_DIR
