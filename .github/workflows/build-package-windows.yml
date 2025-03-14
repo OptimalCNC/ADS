@@ -23,7 +23,7 @@ jobs:
       - name: Configure and Build ADS
         shell: pwsh
         run: |
-          $env:TwinCAT_ROOT="C:\TwinCAT"
+          $env:TwinCAT_ROOT="C:/TwinCAT"
           echo "TwinCAT_ROOT is set to $env:TwinCAT_ROOT"
           
           mkdir build
