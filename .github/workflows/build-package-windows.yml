@@ -23,12 +23,9 @@ jobs:
       - name: Configure and Build ADS
         shell: pwsh
         run: |
-          $env:TwinCAT_ROOT="C:/TwinCAT"
-          echo "TwinCAT_ROOT is set to $env:TwinCAT_ROOT"
-          
           mkdir build
           cd build
-          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DUSE_TWINCAT_ROUTER=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DTwinCAT_ROOT = "C:/TwinCAT"
           cmake --build . --config ${{ matrix.build_type }}
           cpack -G NSIS64 -C ${{ matrix.build_type }}
 
