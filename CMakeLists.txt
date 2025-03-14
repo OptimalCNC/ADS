@@ -57,6 +57,11 @@ if (win32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   install(FILES $<TARGET_PDB_FILE: ads>
           DESTINATION "${CMAKE_INSTALL_BINDIR}"
           OPTIONAL)
+  if (additional_export_targets)
+    install(FILES $<TARGET_PDB_FILE: ${additional_export_targets}>
+            DESTINATION "${CMAKE_INSTALL_BINDIR}"
+            OPTIONAL)
+  endif()
 endif()
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AdsLib/ DESTINATION include/ads/
@@ -92,14 +97,6 @@ if (USE_TWINCAT_ROUTER)
 endif()
 
 include(cmake/Package.cmake)
-# Configure Debian package if on Linux, you need to install dpkg-dev to build
-# the package.
-if(UNIX)
-  configure_debian_package()
-endif()
-# Configure Windows package if on Windows, you need to install nsis to build the
-# package.
-if(WIN32)
-  configure_windows_package()
-endif()
-
+#install dpkg-dev to build debian package
+#install nsis to build windows package
+configure_packaging()
